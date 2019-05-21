@@ -3,8 +3,8 @@ package simuladorgerenciamentodememoria;
 public class listaLigada {
     private No inicio;// endereço inicial da lista
 
-    public listaLigada(){
-        this.inicio = null; // lista esta vazia
+    public listaLigada(int tamanho){
+        this.inicio = new No(0, null, tamanho);
     }
     public void addInicio( int elemento ){
         this.inicio = new No(elemento,this.inicio);

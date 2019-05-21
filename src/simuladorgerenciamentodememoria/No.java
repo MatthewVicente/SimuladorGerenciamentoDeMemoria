@@ -2,32 +2,34 @@
 package simuladorgerenciamentodememoria;
 
 public class No {
-    private int elemento;
-    private No prox;
+    private int endereco;
+    private int tam;
+    private No proxEnd;
 
-    public No(int elemento, No prox) {
-        this.elemento = elemento;
-        this.prox = prox;
+    public No(int endereco, No proxEnd, int tam) {
+        this.endereco = endereco;
+        this.proxEnd = proxEnd;
+        this.tam = tam;
     }
 
-    public int getElemento() {
-        return elemento;
+    public int getendereco() {
+        return endereco;
     }
 
-    public No getProx() {
-        return prox;
+    public No getproxEnd() {
+        return proxEnd;
     }
 
-    public void setElemento(int elemento) {
-        this.elemento = elemento;
+    public void setendereco(int endereco) {
+        this.endereco = endereco;
     }
 
-    public void setProx(No prox) {
-        this.prox = prox;
+    public void setproxEnd(No proxEnd) {
+        this.proxEnd = proxEnd;
     }
 
     @Override
     public String toString() {
-        return "{" + this.elemento + "," + this.prox + '}';
+        return "{" + this.endereco + "," + this.proxEnd + '}';
     }    
 }
