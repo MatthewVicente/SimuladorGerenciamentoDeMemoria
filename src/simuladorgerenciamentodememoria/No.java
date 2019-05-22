@@ -2,18 +2,20 @@
 package simuladorgerenciamentodememoria;
 
 public class No {
-    private int endereco;
+    private int inicioDoEndereco;
+    private int finalDoEndereco;
     private int tam;
     private No proxEnd;
 
-    public No(int endereco, No proxEnd, int tam) {
-        this.endereco = endereco;
+    public No(int inicioDoEndereco , No proxEnd, int tam) {
+        this.inicioDoEndereco = inicioDoEndereco;
         this.proxEnd = proxEnd;
         this.tam = tam;
+        this.finalDoEndereco = this.tam;
     }
 
     public int getEndereco() {
-        return this.endereco;
+        return this.inicioDoEndereco;
     }
 
     public No getproxEnd() {
@@ -25,7 +27,11 @@ public class No {
     }
 
     public void setendereco(int endereco) {
-        this.endereco = endereco;
+        this.inicioDoEndereco = endereco;
+    }
+    
+    public void reduzTamanho(int tamanho) {
+        this.tam -= tamanho;
     }
 
     public void setproxEnd(No proxEnd) {
@@ -34,6 +40,6 @@ public class No {
 
     @Override
     public String toString() {
-        return "{" + this.endereco + ","  + this.proxEnd + '}';
+        return "{" + this.inicioDoEndereco + ","  + this.proxEnd + '}';
     }    
 }
