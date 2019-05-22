@@ -3,11 +3,16 @@ package simuladorgerenciamentodememoria;
 public class listaLigada {
     private No inicio;// endereço inicial da lista
 
-    public listaLigada(int tamanho){
-        this.inicio = new No(0, null, tamanho);
+    public listaLigada(int tamanho, boolean initializeEmpty){
+        if (initializeEmpty) {
+            this.inicio = null;
+        } else {
+            this.inicio = new No(0, null, tamanho);
+        }        
     }
-    public void addInicio( int elemento ){
-        this.inicio = new No(elemento,this.inicio);
+    
+    public void addInicio( int elemento, int tamanho ){
+        this.inicio = new No(elemento,this.inicio,tamanho);
     }
     
     public int remInicio(){
@@ -17,8 +22,8 @@ public class listaLigada {
             No ant = this.inicio; // guarda a celula que serah removida
             // avançar a referência que aponta para o primeiro  Nó (inicio) 
             // para o próximo Nó da lista
-            this.inicio = this.inicio.getProx();
-            return ant.getElemento();
+            this.inicio = this.inicio.getproxEnd();
+            return ant.getEndereco();
         }
         else
             throw new RuntimeException("lista vazia!");
@@ -33,14 +38,25 @@ public class listaLigada {
         return this.inicio+"";
     }   
     // versao iterativa
-    public boolean busca(int x) {
+    public boolean buscaInter(int x) {
         
-        for(No aux=this.inicio; aux!=null;aux=aux.getProx())
-            if( aux.getElemento()==x)
+        for(No aux=this.inicio; aux!=null;aux=aux.getproxEnd())
+            if( aux.getEndereco()==x){
+                System.out.println(aux.getTam());
                 return true;
+            }
         
         return false;
     }
+    
+    public int getTam(int x) {
+        for(No aux=this.inicio; aux!=null;aux=aux.getproxEnd())
+            if( aux.getEndereco() == x ){
+                return aux.getTam();
+            }
+        return 0;
+    }
+    
     // versao recursiva
     public boolean buscaRec(int x ){
         return busca(x, this.inicio);
@@ -50,38 +66,38 @@ public class listaLigada {
         if( aux == null )
             return false;
         
-        if( aux.getElemento()==x)
+        if( aux.getEndereco()==x)
             return true;
         
-         return busca(x, aux.getProx());
+         return busca(x, aux.getproxEnd());
     }
 
-    public void addOrdenado(int x) {
+    public void addOrdenado(int x, int tam) {
         No aux = this.inicio;
-        No ant=null;
-        while( aux !=null&&aux.getElemento()<x){
+        No ant = null;
+        while( aux != null && aux.getEndereco()<x){
             ant = aux;
-            aux = aux.getProx();
+            aux = aux.getproxEnd();
         }
-        No novo = new No(x, aux);
+        No novo = new No(x, aux,tam);
         if( ant == null )// insere  no inicio
             this.inicio = novo;
         else
-            ant.setProx(novo);
+            ant.setproxEnd(novo);
         
     }
-    public void addFim(int x) {
+    public void addFim(int x, int tam) {
         No aux = this.inicio;
         No ant=null;
         while( aux !=null){
             ant = aux;
-            aux = aux.getProx();
+            aux = aux.getproxEnd();
         }
-        No novo = new No(x, null);
+        No novo = new No(x, null, tam);
         if( ant == null )// insere  no inicio
             this.inicio = novo;
         else
-            ant.setProx(novo);
+            ant.setproxEnd(novo);
         
     }
     

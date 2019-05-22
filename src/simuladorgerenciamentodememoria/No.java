@@ -12,12 +12,16 @@ public class No {
         this.tam = tam;
     }
 
-    public int getendereco() {
-        return endereco;
+    public int getEndereco() {
+        return this.endereco;
     }
 
     public No getproxEnd() {
-        return proxEnd;
+        return this.proxEnd;
+    }
+    
+    public int getTam() {
+        return this.tam;
     }
 
     public void setendereco(int endereco) {
@@ -30,6 +34,6 @@ public class No {
 
     @Override
     public String toString() {
-        return "{" + this.endereco + "," + this.proxEnd + '}';
+        return "{" + this.endereco + ","  + this.proxEnd + '}';
     }    
 }
