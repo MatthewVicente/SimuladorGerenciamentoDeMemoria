@@ -101,20 +101,21 @@ public class listaLigada {
 //        }
 //
 //        return busca(x, aux.getproxEnd());
-//    }
+//    
     public void addOrdenado(No removido) {
         No aux = this.inicio;
         No ant = null;
-        while (aux != null && aux.getInicioDoEndereco() < removido.getInicioDoEndereco()) {
+        while (aux != null && aux.getInicioDoEndereco() < removido.getInicioDoEndereco() ) {
             ant = aux;
             aux = aux.getproxEnd();
         }
-        qtdBlocos++;
+        this.qtdBlocos++;
+        No novo = new No(removido.getInicioDoEndereco(), aux, removido.getTam(), qtdBlocos);
         if (ant == null)// insere  no inicio
         {
-            this.inicio = removido;
+            this.inicio = novo;
         } else {
-            ant.setproxEnd(removido);
+            ant.setproxEnd(novo);
         }
 
     }
