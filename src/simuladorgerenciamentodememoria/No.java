@@ -2,21 +2,29 @@
 package simuladorgerenciamentodememoria;
 
 public class No {
+    private int numeroDoBloco;
     private int inicioDoEndereco;
     private int finalDoEndereco;
     private int tam;
     private No proxEnd;
 
-    public No(int inicioDoEndereco , No proxEnd, int tam) {
+    public No(int inicioDoEndereco , No proxEnd, int tam, int numeroDoBloco) {
         this.inicioDoEndereco = inicioDoEndereco;
         this.proxEnd = proxEnd;
         this.tam = tam;
-        this.finalDoEndereco = this.tam;
+        this.finalDoEndereco = this.inicioDoEndereco + this.tam;
+        this.numeroDoBloco = numeroDoBloco;
     }
 
-    public int getEndereco() {
-        return this.inicioDoEndereco;
+    public int getInicioDoEndereco() {
+        return inicioDoEndereco;
     }
+
+    public int getFinalDoEndereco() {
+        return finalDoEndereco;
+    }
+
+   
 
     public No getproxEnd() {
         return this.proxEnd;
@@ -26,7 +34,7 @@ public class No {
         return this.tam;
     }
 
-    public void setendereco(int endereco) {
+    public void setInicioDoEndereco(int endereco) {
         this.inicioDoEndereco = endereco;
     }
     
@@ -40,6 +48,14 @@ public class No {
 
     @Override
     public String toString() {
-        return "{" + this.inicioDoEndereco + ","  + this.proxEnd + '}';
+        return "Numero do bloco: "+ this.numeroDoBloco +" [Inicio do Endereco: " + this.inicioDoEndereco + ", Final do endereco: " + this.finalDoEndereco + ", Memoria alocada: " + this.tam + "] \n" + this.proxEnd;
     }    
+
+    public int getNumeroDoBloco() {
+        return numeroDoBloco;
+    }
+
+    public void setNumeroDoBloco(int numeroDoBloco) {
+        this.numeroDoBloco = numeroDoBloco;
+    }
 }
