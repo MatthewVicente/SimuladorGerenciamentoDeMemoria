@@ -6,6 +6,7 @@ package simuladorgerenciamentodememoria;
 public class listaLigada {
 
     private No inicio;// endereço inicial da
+    private int id = 1;
     private int qtdBlocos = 1;
     private String tipo;
 
@@ -14,7 +15,7 @@ public class listaLigada {
         if (lista == "listaBlocosAlocados") {
             this.inicio = null;
         } else {
-            this.inicio = new No(0, null, tamanho, qtdBlocos);
+            this.inicio = new No(0, null, tamanho, id);
         }
     }
 
@@ -29,7 +30,8 @@ public class listaLigada {
 
     // APAGAR SE NAO USAR
     public void addInicio(int elemento, int tamanho) {
-        this.inicio = new No(elemento, this.inicio, tamanho, qtdBlocos);
+        this.inicio = new No(elemento, this.inicio, tamanho, id);
+        this.id++;
         this.qtdBlocos++;
     }
 
@@ -42,6 +44,7 @@ public class listaLigada {
             // avançar a referência que aponta para o primeiro  Nó (inicio) 
             // para o próximo Nó da lista
             this.inicio = this.inicio.getproxEnd();
+            this.qtdBlocos--;
             return ant.getInicioDoEndereco();
         } else {
             throw new RuntimeException("lista vazia!");
@@ -77,6 +80,7 @@ public class listaLigada {
                 } else {
                     anterior.setproxEnd(aux.getproxEnd());
                 }
+                this.qtdBlocos--;
                 return aux;
             } else {
                 anterior = aux;
@@ -105,12 +109,13 @@ public class listaLigada {
     public void addOrdenado(No removido) {
         No aux = this.inicio;
         No ant = null;
-        while (aux != null && aux.getInicioDoEndereco() < removido.getInicioDoEndereco() ) {
+        while (aux != null && aux.getInicioDoEndereco() < removido.getInicioDoEndereco()) {
             ant = aux;
             aux = aux.getproxEnd();
         }
+        this.id++;
         this.qtdBlocos++;
-        No novo = new No(removido.getInicioDoEndereco(), aux, removido.getTam(), qtdBlocos);
+        No novo = new No(removido.getInicioDoEndereco(), aux, removido.getTam(), id);
         if (ant == null)// insere  no inicio
         {
             this.inicio = novo;
@@ -127,7 +132,8 @@ public class listaLigada {
             ant = aux;
             aux = aux.getproxEnd();
         }
-        No novo = new No(endereco, null, tam, qtdBlocos);
+        No novo = new No(endereco, null, tam, id);
+        id++;
         qtdBlocos++;
         if (ant == null)// insere  no inicio
         {
@@ -137,8 +143,26 @@ public class listaLigada {
         }
     }
 
-//    public void removeProcesso(int numeroDoProcesso) {
-//        No processo = this.getProcesso(numeroDoProcesso);
+//    public boolean busca(int x) {
 //
+//        for (No aux = this.inicio; aux != null; aux = aux.getProx()) {
+//            if (aux.getElemento() == x) {
+//                return true;
+//            }
+//        }
+//
+//        return false;
 //    }
+    public void chegaContigua() {   
+        if(qtdBlocos >= 2){
+            No atual = this.inicio;
+            for(No prox = atual.getproxEnd(); prox != null; atual = prox, prox = prox.getproxEnd()){
+                if(atual.getFinalDoEndereco() == prox.getInicioDoEndereco()){
+                    // TODO junta num no novo
+                }                
+            }            
+        }
+       
+
+    }
 }

@@ -42,6 +42,7 @@ public class SimuladorGerenciamentoDeMemória {
         System.out.println("|-------------------------------------------------|");
         System.out.printf("Escolha: ");
         escolha = ler.nextInt();
+        listaBlocosAlocados.chegaContigua();
         switch (escolha) {
             // Alocar memória pra execução do processo
             case 1:
@@ -53,14 +54,9 @@ public class SimuladorGerenciamentoDeMemória {
             // Finalizar processo, ou seja, liberar memória que o processo estava usando
             case 2:
                 System.out.println("Qual processo voce quer remover?");
-                int processo = ler.nextInt();
-                No removido = listaBlocosAlocados.removeProcesso(processo);
-                if (removido != null) {
-                    listaBlocosLivres.addOrdenado(removido);
-                } else {
-                    System.out.println("Esse processo já foi removido!");
-                }
-                menu(listaBlocosLivres, listaBlocosAlocados);
+                int numeroDoBloco = ler.nextInt();
+                remover(listaBlocosLivres, listaBlocosAlocados, numeroDoBloco);
+
                 break;
 
             // Imprimir na tela a situação atual da memória: blocos de memórias livres e blocos de 
@@ -89,7 +85,13 @@ public class SimuladorGerenciamentoDeMemória {
     }
 
     public static void remover(listaLigada listaBlocosLivres, listaLigada listaBlocosAlocados, int numeroDoBloco) {
-
+        No removido = listaBlocosAlocados.removeProcesso(numeroDoBloco);
+        if (removido != null) {
+            listaBlocosLivres.addOrdenado(removido);
+        } else {
+            System.out.println("Esse processo já foi removido!");
+        }
+        menu(listaBlocosLivres, listaBlocosAlocados);
     }
 
     public static void printaListas(listaLigada listaBlocosLivres, listaLigada listaBlocosAlocados) {
