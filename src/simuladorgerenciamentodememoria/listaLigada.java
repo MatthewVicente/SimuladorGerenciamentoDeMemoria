@@ -182,12 +182,13 @@ public class listaLigada {
             No atual = this.inicio;
             No ant = atual;
             for (No prox = atual.getproxEnd(); prox != null; ant = atual, atual = prox, prox = prox.getproxEnd()) {
+                
                 if (atual.getFinalDoEndereco() == prox.getInicioDoEndereco()) {
                     int novoTamanho = (atual.getTam() + prox.getTam());
                     // Construtor 2:     Inicio do Endereço     |     Final do Endereco    |     Prox nó      |   Tamanho  |   Id
                     No novo = new No(atual.getInicioDoEndereco(), prox.getFinalDoEndereco(), prox.getproxEnd(), novoTamanho, this.id);
                     this.qtdBlocos--;
-                    if (this.qtdBlocos == 2) {
+                    if (atual == this.inicio) {
                         this.inicio = novo;
                     } else {
                         ant.setproxEnd(novo);

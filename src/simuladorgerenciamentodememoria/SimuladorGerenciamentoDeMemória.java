@@ -27,16 +27,16 @@ public class SimuladorGerenciamentoDeMemória {
         Scanner ler = new Scanner(System.in);
         int escolha;
 
-        // TO DO -> Tratar quando n tiver apenas um bloco na lista livre
 
 //        System.out.println("|-------------------------------------------------|");
-        System.out.println("       Olá, o sistema possui atualmente " + listaBlocosLivres.getMemoriaDisponivel() + " bytes de memoria restantes");
+//        System.out.println("       Olá, o sistema possui atualmente " + listaBlocosLivres.getMemoriaDisponivel() + " bytes de memoria restantes");
 //        System.out.println();
 //        System.out.println("       Qual das operacoes a seguir deseja realizar?");
 //        System.out.println("       1 - Alocar memória para execução do processo;");
 //        System.out.println("       2 - Finalizar processo, ou seja, liberar a memoria que ele estava usando;");
 //        System.out.println("       3 - Imprimir na tela a situacao atual da memoria: blocos de memoria livres e blocos de memoria alocados.");
 //        System.out.println();
+        listaBlocosLivres.checaContigua();
         printaListas(listaBlocosLivres, listaBlocosAlocados);
         System.out.println("|-------------------------------------------------|");
         System.out.printf("Escolha: ");
@@ -54,9 +54,8 @@ public class SimuladorGerenciamentoDeMemória {
             case 2:
                 System.out.println("Qual processo voce quer remover?");
                 int numeroDoBloco = ler.nextInt();
-                //listaBlocosLivres.checaContigua();
                 remover(listaBlocosLivres, listaBlocosAlocados, numeroDoBloco);
-                //listaBlocosLivres.checaContigua();
+                listaBlocosLivres.checaContigua();
                 menu(listaBlocosLivres, listaBlocosAlocados);
                 break;
 
