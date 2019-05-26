@@ -23,6 +23,7 @@ public class listaLigada {
         return this.inicio;
     }
 
+    // Retorna quanta memória disponível há na lista, checando todos os nós
     public int getMemoriaDisponivel() {
         int memoriaDisponivel = 0;
         for (No aux = this.inicio; aux != null; aux = aux.getproxEnd()) {
@@ -31,8 +32,8 @@ public class listaLigada {
         return memoriaDisponivel;
     }
 
+    // Atualiza o endereço inicial do bloco, baseando-se em uma quantidade de memoria que foi removida dele
     public void atualizaNo(No melhorNo, int qtdAlocada) {
-
         melhorNo.setInicioDoEndereco(melhorNo.getInicioDoEndereco() + qtdAlocada);
         melhorNo.reduzTamanho(qtdAlocada);
     }
@@ -80,41 +81,31 @@ public class listaLigada {
         return 0;
     }
 
-    public No removeProcesso(int processoProcurado) {
+    // Remove um dado bloco
+    public No removeProcesso(int blocoProcurado) {
         No anterior = null;
-        for (No aux = this.inicio; aux != null; aux = aux.getproxEnd()) {
-            if (aux.getNumeroDoBloco() == processoProcurado) {
-                if (this.inicio.getNumeroDoBloco() == processoProcurado) {
+        // Busca em toda a lista
+        for (No aux = this.inicio; aux != null; anterior = aux, aux = aux.getproxEnd()) {
+            // Caso o nó atual seja o procurado
+            if (aux.getNumeroDoBloco() == blocoProcurado) {
+                // Caso seja o primeiro nó da lista
+                if (this.inicio.getNumeroDoBloco() == blocoProcurado) {
+                    // Remove o primeiro nó transformando o início no proximo bloco da lista
                     this.inicio = aux.getproxEnd();
+                    // Caso não seja
                 } else {
+                    // Remove o bloco atual, indicando que seu anterior deve
+                    // apontar para seu próximo
                     anterior.setproxEnd(aux.getproxEnd());
                 }
                 this.qtdBlocos--;
+                // Retorna o nó removido
                 return aux;
-            } else {
-                anterior = aux;
             }
         }
         return null;
     }
 
-    // APAGAR SE NAO USAR
-    // versao recursiva
-//    public boolean buscaRec(int x) {
-//        return busca(x, this.inicio);
-//    }
-//    private boolean busca(int x, No aux) {
-//        // condicoes de parada
-//        if (aux == null) {
-//            return false;
-//        }
-//
-//        if (aux.getEndereco() == x) {
-//            return true;
-//        }
-//
-//        return busca(x, aux.getproxEnd());
-//    
     public void addOrdenado(No removido) {
         No aux = this.inicio;
         No ant = null;
@@ -142,8 +133,8 @@ public class listaLigada {
             aux = aux.getproxEnd();
         }
         No novo = new No(endereco, null, tam, id);
-        id++;
-        qtdBlocos++;
+        this.id++;
+        this.qtdBlocos++;
         if (ant == null)// insere  no inicio
         {
             this.inicio = novo;
@@ -152,23 +143,22 @@ public class listaLigada {
         }
     }
 
-    public void apagaVazio() {
-
-        for (No aux = this.inicio; aux != null; aux = aux.getproxEnd()) {
-            if (aux.getTam() == 0) {
-                this.removeProcesso(aux.getNumeroDoBloco());
-            }
-        }
-    }
-
+    // Retorna o melhor nó possível para alocar uma certa quantidade de memória
     public No buscaMelhorNo(int qtdAlocada) {
-        int sobra = 0, menorSobra = 4000;
+        //       | Inicializa com o maior número de memória possível
+        int sobra, menorSobra = this.getMemoriaDisponivel();
         No melhorNo = null;
+        // Checa todos os nós da lista
         for (No aux = this.inicio; aux != null; aux = aux.getproxEnd()) {
+            // Caso o tamnho do nó atual seja suficiente pra alocar a memória desejada
             if (aux.getTam() >= qtdAlocada) {
+                // Calcula quanto de sobra esse nó vai deixar
                 sobra = aux.getTam() - qtdAlocada;
+                // Caso esse valor seja menor que o anterior
                 if (sobra < menorSobra) {
+                    // Atualiza o menor valor possível
                     menorSobra = sobra;
+                    // Atualiza o melhor nó possível
                     melhorNo = aux;
                 }
             }
@@ -176,25 +166,29 @@ public class listaLigada {
         return melhorNo;
     }
 
+    // Checa e forma, se possível, blocos de memória contínuos(contiguos)
     public void checaContigua() {
-        this.apagaVazio();
-        if (this.qtdBlocos >= 2) {
-            No atual = this.inicio;
-            No ant = atual;
-            for (No prox = atual.getproxEnd(); prox != null; ant = atual, atual = prox, prox = prox.getproxEnd()) {
-                
-                if (atual.getFinalDoEndereco() == prox.getInicioDoEndereco()) {
-                    int novoTamanho = (atual.getTam() + prox.getTam());
-                    // Construtor 2:     Inicio do Endereço     |     Final do Endereco    |     Prox nó      |   Tamanho  |   Id
-                    No novo = new No(atual.getInicioDoEndereco(), prox.getFinalDoEndereco(), prox.getproxEnd(), novoTamanho, this.id);
-                    this.qtdBlocos--;
-                    if (atual == this.inicio) {
-                        this.inicio = novo;
-                    } else {
-                        ant.setproxEnd(novo);
-                    }
+        No atual = this.inicio;
+        No ant = atual;
+        // Estrutura basica de busca em lista ligada    | Atualiza as variáveis de controle
+        for (No prox = atual.getproxEnd(); prox != null; ant = atual, atual = prox, prox = prox.getproxEnd()) {
+            if (atual.getFinalDoEndereco() == prox.getInicioDoEndereco()) {
+                // Calcula o tamanho do novo bloco de memória continuo
+                int novoTamanho = (atual.getTam() + prox.getTam());
+                // Construtor 2:     Inicio do Endereço     |     Final do Endereco    |     Prox nó      |   Tamanho  |   Id
+                No novo = new No(atual.getInicioDoEndereco(), prox.getFinalDoEndereco(), prox.getproxEnd(), novoTamanho, this.id);
+                // Reduz a quantidade de blocos na lista
+                this.qtdBlocos--;
+                // Caso o atual seja o início da lista, põe o novo nó no lugar dele
+                if (atual == this.inicio) {
+                    this.inicio = novo;
+                } // Caso não, manda o anterior apontar pro nó novo 
+                else {
+                    ant.setproxEnd(novo);
                 }
+
             }
         }
     }
+
 }
