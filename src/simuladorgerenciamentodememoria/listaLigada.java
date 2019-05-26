@@ -103,6 +103,7 @@ public class listaLigada {
                 return aux;
             }
         }
+        // Retorna nulo caso o bloco dado não seja encontrado
         return null;
     }
 
