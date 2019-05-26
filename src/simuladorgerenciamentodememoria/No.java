@@ -8,7 +8,7 @@ public class No {
     private int tam;
     private No proxEnd;
 
-    public No(int inicioDoEndereco , No proxEnd, int tam, int numeroDoBloco) {
+    public No(int inicioDoEndereco, No proxEnd, int tam, int numeroDoBloco) {
         this.inicioDoEndereco = inicioDoEndereco;
         this.proxEnd = proxEnd;
         this.tam = tam;
@@ -16,7 +16,7 @@ public class No {
         this.numeroDoBloco = numeroDoBloco;
     }
 
-    public No(int inicioDoEndereco , int finalDoEndereco, No proxEnd, int tam, int numeroDoBloco) {
+    public No(int inicioDoEndereco, int finalDoEndereco, No proxEnd, int tam, int numeroDoBloco) {
         this.inicioDoEndereco = inicioDoEndereco;
         this.proxEnd = proxEnd;
         this.tam = tam;

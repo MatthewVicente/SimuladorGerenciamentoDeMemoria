@@ -38,30 +38,6 @@ public class listaLigada {
         melhorNo.reduzTamanho(qtdAlocada);
     }
 
-    // APAGAR SE NAO USAR
-    public void addInicio(int elemento, int tamanho) {
-        this.inicio = new No(elemento, this.inicio, tamanho, id);
-        this.id++;
-        this.qtdBlocos++;
-    }
-
-    // APAGAR SE NAO USAR
-    public int remInicio() {
-        //Antes de remover devemos verificar se temos pelo menos um Nó na lista,
-        // não faz sentido remover algo que não existe, 
-        if (!this.isEmpty()) { // se a lista nao esta vazia
-            No ant = this.inicio; // guarda a celula que serah removida
-            // avançar a referência que aponta para o primeiro  Nó (inicio) 
-            // para o próximo Nó da lista
-            this.inicio = this.inicio.getproxEnd();
-            this.qtdBlocos--;
-            return ant.getInicioDoEndereco();
-        } else {
-            throw new RuntimeException("lista vazia!");
-        }
-
-    }
-
     public boolean isEmpty() {
         return this.inicio == null;
     }
@@ -146,7 +122,7 @@ public class listaLigada {
 
     // Retorna o melhor nó possível para alocar uma certa quantidade de memória
     public No buscaMelhorNo(int qtdAlocada) {
-        //       | Inicializa com o maior número de memória possível
+        //                   | Inicializa com o maior número de memória possível
         int sobra, menorSobra = this.getMemoriaDisponivel();
         No melhorNo = null;
         // Checa todos os nós da lista
