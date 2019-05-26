@@ -16,6 +16,14 @@ public class No {
         this.numeroDoBloco = numeroDoBloco;
     }
 
+    public No(int inicioDoEndereco , int finalDoEndereco, No proxEnd, int tam, int numeroDoBloco) {
+        this.inicioDoEndereco = inicioDoEndereco;
+        this.proxEnd = proxEnd;
+        this.tam = tam;
+        this.finalDoEndereco = finalDoEndereco;
+        this.numeroDoBloco = numeroDoBloco;
+    }
+
     public int getInicioDoEndereco() {
         return inicioDoEndereco;
     }

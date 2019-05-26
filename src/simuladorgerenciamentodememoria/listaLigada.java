@@ -1,7 +1,7 @@
 package simuladorgerenciamentodememoria;
 
 /*
-    APLICAR CONDICOES NOS METODOS DEPENDENDO DA LISTA
+ APLICAR CONDICOES NOS METODOS DEPENDENDO DA LISTA
  */
 public class listaLigada {
 
@@ -23,9 +23,18 @@ public class listaLigada {
         return this.inicio;
     }
 
-    public void atualizaInicio(int qtdAlocada) {
-        this.inicio.setInicioDoEndereco(this.inicio.getInicioDoEndereco() + qtdAlocada);
-        this.inicio.reduzTamanho(qtdAlocada);
+    public int getMemoriaDisponivel() {
+        int memoriaDisponivel = 0;
+        for (No aux = this.inicio; aux != null; aux = aux.getproxEnd()) {
+            memoriaDisponivel += aux.getTam();
+        }
+        return memoriaDisponivel;
+    }
+
+    public void atualizaNo(No melhorNo, int qtdAlocada) {
+
+        melhorNo.setInicioDoEndereco(melhorNo.getInicioDoEndereco() + qtdAlocada);
+        melhorNo.reduzTamanho(qtdAlocada);
     }
 
     // APAGAR SE NAO USAR
@@ -75,7 +84,7 @@ public class listaLigada {
         No anterior = null;
         for (No aux = this.inicio; aux != null; aux = aux.getproxEnd()) {
             if (aux.getNumeroDoBloco() == processoProcurado) {
-                if (processoProcurado == 1) {
+                if (this.inicio.getNumeroDoBloco() == processoProcurado) {
                     this.inicio = aux.getproxEnd();
                 } else {
                     anterior.setproxEnd(aux.getproxEnd());
@@ -143,26 +152,48 @@ public class listaLigada {
         }
     }
 
-//    public boolean busca(int x) {
-//
-//        for (No aux = this.inicio; aux != null; aux = aux.getProx()) {
-//            if (aux.getElemento() == x) {
-//                return true;
-//            }
-//        }
-//
-//        return false;
-//    }
-    public void chegaContigua() {   
-        if(qtdBlocos >= 2){
-            No atual = this.inicio;
-            for(No prox = atual.getproxEnd(); prox != null; atual = prox, prox = prox.getproxEnd()){
-                if(atual.getFinalDoEndereco() == prox.getInicioDoEndereco()){
-                    // TODO junta num no novo
-                }                
-            }            
-        }
-       
+    public void apagaVazio() {
 
+        for (No aux = this.inicio; aux != null; aux = aux.getproxEnd()) {
+            if (aux.getTam() == 0) {
+                this.removeProcesso(aux.getNumeroDoBloco());
+            }
+        }
+    }
+
+    public No buscaMelhorNo(int qtdAlocada) {
+        int sobra = 0, menorSobra = 4000;
+        No melhorNo = null;
+        for (No aux = this.inicio; aux != null; aux = aux.getproxEnd()) {
+            if (aux.getTam() >= qtdAlocada) {
+                sobra = aux.getTam() - qtdAlocada;
+                if (sobra < menorSobra) {
+                    menorSobra = sobra;
+                    melhorNo = aux;
+                }
+            }
+        }
+        return melhorNo;
+    }
+
+    public void checaContigua() {
+        this.apagaVazio();
+        if (this.qtdBlocos >= 2) {
+            No atual = this.inicio;
+            No ant = atual;
+            for (No prox = atual.getproxEnd(); prox != null; ant = atual, atual = prox, prox = prox.getproxEnd()) {
+                if (atual.getFinalDoEndereco() == prox.getInicioDoEndereco()) {
+                    int novoTamanho = (atual.getTam() + prox.getTam());
+                    // Construtor 2:     Inicio do Endereço     |     Final do Endereco    |     Prox nó      |   Tamanho  |   Id
+                    No novo = new No(atual.getInicioDoEndereco(), prox.getFinalDoEndereco(), prox.getproxEnd(), novoTamanho, this.id);
+                    this.qtdBlocos--;
+                    if (this.qtdBlocos == 2) {
+                        this.inicio = novo;
+                    } else {
+                        ant.setproxEnd(novo);
+                    }
+                }
+            }
+        }
     }
 }

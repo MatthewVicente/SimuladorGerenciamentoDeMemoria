@@ -28,10 +28,9 @@ public class SimuladorGerenciamentoDeMemória {
         int escolha;
 
         // TO DO -> Tratar quando n tiver apenas um bloco na lista livre
-        int memoriaDisponivel = listaBlocosLivres.getInicio().getTam();
 
 //        System.out.println("|-------------------------------------------------|");
-//        System.out.println("       Olá, o sistema possui atualmente " + memoriaDisponivel + " bytes de memoria restantes");
+        System.out.println("       Olá, o sistema possui atualmente " + listaBlocosLivres.getMemoriaDisponivel() + " bytes de memoria restantes");
 //        System.out.println();
 //        System.out.println("       Qual das operacoes a seguir deseja realizar?");
 //        System.out.println("       1 - Alocar memória para execução do processo;");
@@ -42,21 +41,23 @@ public class SimuladorGerenciamentoDeMemória {
         System.out.println("|-------------------------------------------------|");
         System.out.printf("Escolha: ");
         escolha = ler.nextInt();
-        listaBlocosAlocados.chegaContigua();
         switch (escolha) {
             // Alocar memória pra execução do processo
             case 1:
                 System.out.println("Quanta memória você quer alocar?");
                 int qtdAlocada = ler.nextInt();
                 alocar(listaBlocosLivres, listaBlocosAlocados, qtdAlocada);
+                menu(listaBlocosLivres, listaBlocosAlocados);
                 break;
 
             // Finalizar processo, ou seja, liberar memória que o processo estava usando
             case 2:
                 System.out.println("Qual processo voce quer remover?");
                 int numeroDoBloco = ler.nextInt();
+                //listaBlocosLivres.checaContigua();
                 remover(listaBlocosLivres, listaBlocosAlocados, numeroDoBloco);
-
+                //listaBlocosLivres.checaContigua();
+                menu(listaBlocosLivres, listaBlocosAlocados);
                 break;
 
             // Imprimir na tela a situação atual da memória: blocos de memórias livres e blocos de 
@@ -74,13 +75,15 @@ public class SimuladorGerenciamentoDeMemória {
 
     public static void alocar(listaLigada listaBlocosLivres, listaLigada listaBlocosAlocados, int qtdAlocada) {
         // Checa se tem memoria disponivel
-        if (listaBlocosLivres.getInicio().getTam() >= qtdAlocada) {
-            listaBlocosAlocados.addFim(listaBlocosLivres.getInicio().getInicioDoEndereco(), qtdAlocada);
-            listaBlocosLivres.atualizaInicio(qtdAlocada);
-            menu(listaBlocosLivres, listaBlocosAlocados);
-        } else {
-            System.out.println("Não há espaço suficiente, remova um processo e tente novamente!");
-            menu(listaBlocosLivres, listaBlocosAlocados);
+        if (qtdAlocada > 0) {
+            No melhorNo = listaBlocosLivres.buscaMelhorNo(qtdAlocada);
+            if (melhorNo != null && melhorNo.getTam() >= qtdAlocada) {
+                listaBlocosAlocados.addFim(melhorNo.getInicioDoEndereco(), qtdAlocada);
+                listaBlocosLivres.atualizaNo(melhorNo, qtdAlocada);
+                listaBlocosLivres.apagaVazio();
+            } else {
+                System.out.println("Não há espaço suficiente, remova um processo e tente novamente!");
+            }
         }
     }
 
@@ -89,9 +92,8 @@ public class SimuladorGerenciamentoDeMemória {
         if (removido != null) {
             listaBlocosLivres.addOrdenado(removido);
         } else {
-            System.out.println("Esse processo já foi removido!");
+            System.out.println("Esse processo já foi removido ou não existe!");
         }
-        menu(listaBlocosLivres, listaBlocosAlocados);
     }
 
     public static void printaListas(listaLigada listaBlocosLivres, listaLigada listaBlocosAlocados) {
